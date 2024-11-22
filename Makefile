@@ -2,8 +2,8 @@
 all: main
 
 # Rule to create the executable from object files
-main: main.o calculations.o ActionData.o
-	g++ -o main main.o calculations.o ActionData.o
+main: main.o calculations.o ActionData.o MenuData.o
+	g++ -o main main.o calculations.o ActionData.o MenuData.o
 
 # Rule to compile main.c into main.o
 main.o: main.cpp calculations.h
@@ -15,6 +15,9 @@ calculations.o: calculations.cpp calculations.h ActionData.h
 
 ActionData.o: ActionData.cpp ActionData.h
 	g++ -c ActionData.cpp
+
+MenuData.o: MenuData.cpp MenuData.h
+	g++ -c MenuData.cpp
 
 # Clean up object files and executable
 clean:

@@ -1,56 +1,51 @@
 #include "calculations.h"
 
+void quit(ActionData& action_data) {
+	action_data.getOutStream() << "Thank you for running this program.\nContributions are encouraged via Venmo @Epicinator23\n";
+}
+
+void configureMenu(MenuData& menu_data) {
+	menu_data.addFunction(&quit, "Exit the program");
+	menu_data.addFunction(&add, "Add two numbers");
+	menu_data.addFunction(&subtract, "Subtract two numbers");
+	menu_data.addFunction(&multiply, "Multiply two numbers");
+	menu_data.addFunction(&divide, "Divide two numbers");
+	menu_data.addFunction(&exponent, "Raise a number to some exponent");
+	menu_data.addFunction(&logarithm, "Take the log of a number with some base");
+}
+
 void printWelcome(ActionData& action_data) {
 	action_data.getOutStream() << "\n  Welcome!\n\tThis is a calculator.\n\t\tA very boring calculator.\n";
 }
 
-int presentOptions(ActionData& action_data) {
-	action_data.getOutStream() << "\n\nHere are the calculations you may perform:\n"
-		<< "[1] Add two numbers\n"
-		<< "[2] Subtract two numbers\n"
-		<< "[3] Multiply two numbers\n"
-		<< "[4] Divide two numbers\n"
-		<< "[5] Raise a number to some exponent\n"
-		<< "[6] Take the log a number with some base\n"
-		<< "Which option would you like?\n";
-	int input;
-	scanf("%d", &input);
-	return input;
-}
+void presentOptions(MenuData& menu_data, ActionData& action_data) {
+	ostream& os = action_data.getOutStream();
 
+	os << "\n\nHere are your options:";
+
+	for (int i = 0; i < menu_data.getSize(); i++) {
+		os << "\n[" << i << "] " << menu_data.getDescription(i);
+	}
+
+	os << "\nWhich option would you like?\n";
+}
 
 int main() {
 	ActionData action_data(cin, cout);
+	MenuData menu_data;
 
 	printWelcome(action_data);
+	configureMenu(menu_data);
 
 	int choice;
 	do {
-		choice = presentOptions(action_data);
-		switch (choice) {
-		case 1:
-			add(action_data);
-			break;
-		case 2:
-			subtract(action_data);
-			break;
-		case 3:
-			multiply(action_data);
-			break;
-		case 4:
-			divide(action_data);
-			break;
-		case 5:
-			exponent(action_data);
-			break;
-		case 6:
-			logarithm(action_data);
-			break;
-		default:
-			action_data.getOutStream () << "Your choice did not match one of the options.\nThe program will now close.\n";
-			return 1;
-			break;
+		presentOptions(menu_data, action_data);
+		action_data.getInStream() >> choice;	// I need to check non-number entries. Program currently exits normally with letters, etc...
+		if (menu_data.isValid(choice)) {
+			menu_data.getFunction(choice)(action_data);
+		} else {
+			action_data.getOutStream () << "Your choice did not match one of the options.\nPlease try again.";
 		}
-	} while (choice >=1 && choice <= 6);
+	} while (choice != 0);
 	return 0;
 }

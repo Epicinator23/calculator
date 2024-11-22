@@ -1,7 +1,8 @@
 #ifndef CALCULATIONS_H
 #define CALCULATIONS_H
 
-#include "ActionData.h"
+#include "ActionData.h"		// using namespace std;
+#include "MenuData.h"
 
 void add(ActionData& action_data);
 void subtract(ActionData& action_data);

@@ -1,7 +1,6 @@
 #include <cmath>
 #include "calculations.h"
 
-
 void add(ActionData& action_data) {
 	double a, b, c;
 
