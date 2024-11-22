@@ -1,13 +1,13 @@
 #ifndef CALCULATIONS_H
 #define CALCULATIONS_H
 
-#include <math.h>
+#include "ActionData.h"
 
-void add();
-void subtract();
-void multiply();
-void divide();
-void exponent();
-void logarithm();
+void add(ActionData& action_data);
+void subtract(ActionData& action_data);
+void multiply(ActionData& action_data);
+void divide(ActionData& action_data);
+void exponent(ActionData& action_data);
+void logarithm(ActionData& action_data);
 
 #endif

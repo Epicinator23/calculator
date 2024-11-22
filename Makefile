@@ -1,18 +1,21 @@
 # Target executable
-all: program
+all: main
 
 # Rule to create the executable from object files
-program: main.o calculations.o
-	gcc -o program main.o calculations.o -lm
+main: main.o calculations.o ActionData.o
+	g++ -o main main.o calculations.o ActionData.o
 
 # Rule to compile main.c into main.o
-main.o: main.c calculations.h
-	gcc -c main.c
+main.o: main.cpp calculations.h
+	g++ -c main.cpp
 
 # Rule to compile calculations.c into calculations.o
-calculations.o: calculations.c calculations.h
-	gcc -c calculations.c
+calculations.o: calculations.cpp calculations.h ActionData.h
+	g++ -c calculations.cpp
+
+ActionData.o: ActionData.cpp ActionData.h
+	g++ -c ActionData.cpp
 
 # Clean up object files and executable
 clean:
-	rm -f program main.o calculations.o
+	rm -f main *.o
