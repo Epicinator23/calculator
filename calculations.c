@@ -8,7 +8,7 @@ void add() {
 	printf("Second addend: ");
 	scanf("%lf", &b);
 	c = a + b;
-	printf("Sum: %lf\n", c);
+	printf("\nSum: %lf\n", c);
 }
 
 void subtract() {
@@ -18,7 +18,7 @@ void subtract() {
 	printf("Subtrahend: ");
 	scanf("%lf", &b);
 	c = a - b;
-	printf("Difference: %lf\n", c);
+	printf("\nDifference: %lf\n", c);
 }
 
 void multiply() {
@@ -28,7 +28,7 @@ void multiply() {
 	printf("Second factor: ");
 	scanf("%lf", &b);
 	c = a * b;
-	printf("Product: %lf\n", c);
+	printf("\nProduct: %lf\n", c);
 }
 
 void divide() {
@@ -39,7 +39,7 @@ void divide() {
 	scanf("%lf", &b);
 	if (b != 0) {
 		c = a / b;
-		printf("Quotient: %lf\n", c);
+		printf("\nQuotient: %lf\n", c);
 	} else {
 		printf("You cannot divide by 0. Nice try.\n");
 	}
@@ -52,7 +52,7 @@ void exponent() {
 	printf("Exponent: ");
 	scanf("%lf", &b);
 	c = exp(b * log(a));
-	printf("Power: %lf\n", c);
+	printf("\nPower: %lf\n", c);
 }
 
 void logarithm() {
@@ -71,5 +71,5 @@ void logarithm() {
 	} else if (b == 1) {
 		c = a;
 	}
-	printf("Logarithm: %lf\n", c);
+	printf("\nLogarithm: %lf\n", c);
 }
