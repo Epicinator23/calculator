@@ -1,131 +1,99 @@
-#include <cmath>
-#include "calculations.h"
+#include <limits>
+#include <string>
+#include "functions.h"		// using namespace std;
 
-void add(ActionData& action_data) {
-	double a, b, c;
-
+// General function for binary operations. Only has access to functions in menu_data.
+void doMath(MenuData& menu_data, ActionData& action_data) {
+	int choice = action_data.getChoice();
 	ostream& os = action_data.getOutStream();
 	istream& is = action_data.getInStream();
+	string prompt;
 
-	os << "First addend: ";
-	is >> a;
-	action_data.setOperand1(a);
+	if (choice <= 4) {
+		double a, b;
 
-	os << "Second addend: ";
-	is >> b;
-	action_data.setOperand2(b);
+		prompt = menu_data.getFirstWord(choice) + ": ";
+		a = getDouble(action_data, prompt);
+		action_data.setOperand1(a);
 
-	c = a + b;
-	action_data.setResult(c);
-	os << "\nSum: " << action_data.getResult();
-}
+		prompt = menu_data.getSecondWord(choice) + ": ";
+		b = getDouble(action_data, prompt);
+		action_data.setOperand2(b);
 
-void subtract(ActionData& action_data) {
-	double a, b, c;
+		menu_data.getFunction(choice)(action_data);
 
-	ostream& os = action_data.getOutStream();
-	istream& is = action_data.getInStream();
-
-	os << "Minuend: ";
-	is >> a;
-	action_data.setOperand1(a);
-
-	os << "Subtrahend: ";
-	is >> b;
-	action_data.setOperand2(b);
-
-	c = a - b;
-	action_data.setResult(c);
-	os << "\nDifference: " << action_data.getResult();
-}
-
-void multiply(ActionData& action_data) {
-	double a, b, c;
-
-	ostream& os = action_data.getOutStream();
-	istream& is = action_data.getInStream();
-
-	os << "First factor: ";
-	is >> a;
-	action_data.setOperand1(a);
-
-	os << "Second factor: ";
-	is >> b;
-	action_data.setOperand2(b);
-
-	c = a * b;
-	action_data.setResult(c);
-	os << "\nProduct: " << action_data.getResult();
-}
-
-void divide(ActionData& action_data) {
-	double a, b, c;
-
-	ostream& os = action_data.getOutStream();
-	istream& is = action_data.getInStream();
-
-	os << "Dividend: ";
-	is >> a;
-	action_data.setOperand1(a);
-
-	os << "Divisor: ";
-	is >> b;
-	action_data.setOperand2(b);
-
-	if (b != 0) {
-		c = a / b;
-		action_data.setResult(c);
-		os << "\nQuotient: " << action_data.getResult();
+		os << menu_data.getFinalWord(choice) << ": " << action_data.getResult() << "\n";
 	} else {
-		os << "You cannot divie by 0. Nice try.\n";
+		Matrix a, b;
+
+		prompt = menu_data.getFirstWord(choice) + "...\n";
+		a = getMatrix(action_data, prompt);
+		action_data.setMatrix1(a);
+
+		prompt = menu_data.getSecondWord(choice) + "...\n";
+		b = getMatrix(action_data, prompt);
+		action_data.setMatrix2(b);
+
+		menu_data.getFunction(choice)(action_data);
+
+		os << "\n" << menu_data.getFinalWord(choice) << ":\n" << action_data.getMatrixResult() << "\n";
 	}
 }
 
-void exponent(ActionData& action_data) {
-	double a, b, c;
 
-	ostream& os = action_data.getOutStream();
-	istream& is = action_data.getInStream();
-
-	os << "Base: ";
-	is >> a;
-	action_data.setOperand1(a);
-
-	os << "Exponent: ";
-	is >> b;
-	action_data.setOperand2(b);
-
-	c = exp(b * log(a));
+// adds two operands of action_data together
+void add(ActionData& action_data) {
+	double c;
+	c = action_data.getOperand1() + action_data.getOperand2();
 	action_data.setResult(c);
-	os << "\nResult: " << action_data.getResult();
 }
 
-void logarithm(ActionData& action_data) {
-	double a, b, c;
+// finds difference of action_data operands
+void subtract(ActionData& action_data) {
+	double c;
+	c = action_data.getOperand1() - action_data.getOperand2();
+	action_data.setResult(c);
+}
 
-	ostream& os = action_data.getOutStream();
-	istream& is = action_data.getInStream();
+// multiplies two action_data operands
+void multiply(ActionData& action_data) {
+	double c;
+	c = action_data.getOperand1() * action_data.getOperand2();
+	action_data.setResult(c);
+}
 
-	os << "Argument: ";
-	is >> a;
-	action_data.setOperand1(a);
-
-	os << "Base: ";
-	is >> b;
-	action_data.setOperand2(b);
-
-	if (a > 0 && b > 0) {
-		c = log(a) / log(b);
+// divides action_data operands 1 by 2
+void divide(ActionData& action_data) {
+	double c;
+	if (action_data.getOperand2() == 0) {
+		action_data.setResult(numeric_limits<double>::infinity());
+		cerr << "Dividing by 0 is not allowed. Output is set to infinity anyways. You're welcome.\n";
+	} else {
+		c = action_data.getOperand1() / action_data.getOperand2();
 		action_data.setResult(c);
-		os << "\nLogarithm: " << action_data.getResult();
-	} else if (a <= 0) {
-		os << "You cannot find the log of a number less than or equal to 0.\n";
-		return;
-	} else if (b <= 0) {
-		os << "Logarithms are undefined for bases that are negative";
-	} else if (b == 1) {
-		c = a;
-		action_data.setResult(c);
-		os << "\nLogarithm: " << action_data.getResult();
 	}
+}
+
+void addMatrices(ActionData& action_data) {
+	Matrix m;
+	m = action_data.getMatrix1() + action_data.getMatrix2();
+	action_data.setMatrixResult(m);
+}
+
+void subtractMatrices(ActionData& action_data) {
+	Matrix m;
+	m = action_data.getMatrix1() - action_data.getMatrix2();
+	action_data.setMatrixResult(m);
+}
+
+void multiplyMatrices(ActionData& action_data) {
+	Matrix m;
+	m = action_data.getMatrix1() * action_data.getMatrix2();
+	action_data.setMatrixResult(m);
+}
+
+void divideMatrices(ActionData& action_data) {
+	Matrix m;
+	m = action_data.getMatrix1() / action_data.getMatrix2();
+	action_data.setMatrixResult(m);
 }

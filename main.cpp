@@ -1,35 +1,23 @@
-#include "calculations.h"
+#include "functions.h"		// using namespace std;
 
-void quit(ActionData& action_data) {
-	action_data.getOutStream() << "Thank you for running this program.\nContributions are encouraged via Venmo @Epicinator23\n";
-}
-
+// sets up menu_data. Add raw literals here for new functions.
 void configureMenu(MenuData& menu_data) {
-	menu_data.addFunction(&quit, "Exit the program");
-	menu_data.addFunction(&add, "Add two numbers");
-	menu_data.addFunction(&subtract, "Subtract two numbers");
-	menu_data.addFunction(&multiply, "Multiply two numbers");
-	menu_data.addFunction(&divide, "Divide two numbers");
-	menu_data.addFunction(&exponent, "Raise a number to some exponent");
-	menu_data.addFunction(&logarithm, "Take the log of a number with some base");
+	menu_data.addFunction(&add, "+", "Add two numbers", "First addend", "Second addend", "Sum");
+	menu_data.addFunction(&subtract, "=", "Subtract two numbers", "Minuend", "Subtrahend", "Difference");
+	menu_data.addFunction(&multiply, "*", "Multiply two numbers", "First Factor", "Second Factor", "Product");
+	menu_data.addFunction(&divide, "/", "Divide two numbers", "Dividend", "Divisor", "Quotient");
+	menu_data.addFunction(&addMatrices, "+", "Add two matrices", "First matrix", "Second matrix", "Sum matrix");
+	menu_data.addFunction(&subtractMatrices, "-", "Subtract two matrices", "Minuend matrix", "Subtrahend matrix", "Difference Matrix");
+	menu_data.addFunction(&multiplyMatrices, "*", "Multiply two matrices", "First matrix", "Second matrix", "Product matrix");
+	menu_data.addFunction(&divideMatrices, "/", "Multiply a matrix by the inverse of another matrix", "Dividend matrix", "Divisor matrix", "Quotient matrix");
 }
 
+// Simple welcome printer function
 void printWelcome(ActionData& action_data) {
-	action_data.getOutStream() << "\n  Welcome!\n\tThis is a calculator.\n\t\tA very boring calculator.\n";
+	action_data.getOutStream() << "\n  Welcome!\n\tThis is a calculator.\n\t\tA moderately boring calculator.\n";
 }
 
-void presentOptions(MenuData& menu_data, ActionData& action_data) {
-	ostream& os = action_data.getOutStream();
-
-	os << "\n\nHere are your options:";
-
-	for (int i = 0; i < menu_data.getSize(); i++) {
-		os << "\n[" << i << "] " << menu_data.getDescription(i);
-	}
-
-	os << "\nWhich option would you like?\n";
-}
-
+// The heart of the program. Everything ends up running through here that needs to
 int main() {
 	ActionData action_data(cin, cout);
 	MenuData menu_data;
@@ -38,14 +26,15 @@ int main() {
 	configureMenu(menu_data);
 
 	int choice;
-	do {
+
+	while (action_data.getQuitter() == false) {	// running program engine
 		presentOptions(menu_data, action_data);
-		action_data.getInStream() >> choice;	// I need to check non-number entries. Program currently exits normally with letters, etc...
-		if (menu_data.isValid(choice)) {
+		choice = getChoice(menu_data, action_data);	// ensures choice is a valid option
+		if (choice == 0) {
 			menu_data.getFunction(choice)(action_data);
 		} else {
-			action_data.getOutStream () << "Your choice did not match one of the options.\nPlease try again.";
+			doMath(menu_data, action_data);
 		}
-	} while (choice != 0);
+	}
 	return 0;
 }
