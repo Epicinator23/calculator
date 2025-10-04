@@ -9,7 +9,7 @@ void doMath(MenuData& menu_data, ActionData& action_data) {
 	istream& is = action_data.getInStream();
 	string prompt;
 
-	if (choice <= 4) {
+	if (choice <= 4) {	// Binary math is done here
 		double a, b;
 
 		prompt = menu_data.getFirstWord(choice) + ": ";
@@ -20,10 +20,10 @@ void doMath(MenuData& menu_data, ActionData& action_data) {
 		b = getDouble(action_data, prompt);
 		action_data.setOperand2(b);
 
-		menu_data.getFunction(choice)(action_data);
+		menu_data.getFunction(choice)(action_data);	// Calling appropriate function that actually performs the math operation
 
-		os << menu_data.getFinalWord(choice) << ": " << action_data.getResult() << "\n";
-	} else {
+		os << menu_data.getFinalWord(choice) << ":\n" << action_data.getOperand1() << " " << menu_data.getOperation(choice) << " " << action_data.getOperand2() << " = " << action_data.getResult() << "\n";
+	} else {	// Matrix math is done here
 		Matrix a, b;
 
 		prompt = menu_data.getFirstWord(choice) + "...\n";
@@ -34,7 +34,7 @@ void doMath(MenuData& menu_data, ActionData& action_data) {
 		b = getMatrix(action_data, prompt);
 		action_data.setMatrix2(b);
 
-		menu_data.getFunction(choice)(action_data);
+		menu_data.getFunction(choice)(action_data);	// Calling appropriate function that actually performs the math operation
 
 		os << "\n" << menu_data.getFinalWord(choice) << ":\n" << action_data.getMatrixResult() << "\n";
 	}

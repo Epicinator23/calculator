@@ -3,7 +3,7 @@
 // sets up menu_data. Add raw literals here for new functions.
 void configureMenu(MenuData& menu_data) {
 	menu_data.addFunction(&add, "+", "Add two numbers", "First addend", "Second addend", "Sum");
-	menu_data.addFunction(&subtract, "=", "Subtract two numbers", "Minuend", "Subtrahend", "Difference");
+	menu_data.addFunction(&subtract, "-", "Subtract two numbers", "Minuend", "Subtrahend", "Difference");
 	menu_data.addFunction(&multiply, "*", "Multiply two numbers", "First Factor", "Second Factor", "Product");
 	menu_data.addFunction(&divide, "/", "Divide two numbers", "Dividend", "Divisor", "Quotient");
 	menu_data.addFunction(&addMatrices, "+", "Add two matrices", "First matrix", "Second matrix", "Sum matrix");
@@ -14,7 +14,7 @@ void configureMenu(MenuData& menu_data) {
 
 // Simple welcome printer function
 void printWelcome(ActionData& action_data) {
-	action_data.getOutStream() << "\n  Welcome!\n\tThis is a calculator.\n\t\tA moderately boring calculator.\n";
+	action_data.getOutStream() << "\n  Welcome!\n\tThis is a calculator.\n\t\tA mildly boring calculator.\n";
 }
 
 // The heart of the program. Everything ends up running through here that needs to
@@ -37,4 +37,5 @@ int main() {
 		}
 	}
 	return 0;
+	// Please print all three matrices at once :)
 }
